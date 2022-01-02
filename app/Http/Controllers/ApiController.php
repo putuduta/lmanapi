@@ -117,7 +117,6 @@ class ApiController extends Controller
             'due_date' => 'required|string',
             'bank_name' => 'required|string',
             'bank_number' => 'required|string',
-            'confirmed_time' => 'required|string',
         ]);
 
         //Send failed response if request is not valid
@@ -127,44 +126,38 @@ class ApiController extends Controller
 
         
         $registerPayment = RegistrationPayment::create([
-            'school_id' => $request->id,
+            'school_id' => $request->school_id,
             'payment_term' => $request->payment_term,
             'bank_name' => $request->bank_name,
             'bank_number' => $request->bank_number,
-            'resume' => $request->resume,
+            'due_date' => $request->due_date,
             'status_confirmed' => 1,
-            'confirmed_time' => $request->confirmed_time,
+            'confirmed_time' => date("Y/m/d"),
         ]);
+
+        $school = School::where('id', $request->school_id)->first();
 
         //Request is valid, create new user
         $user = User::create([
-            'name' => $request->name,
+            'name' => 'ADMIN',
+            'school_id' => $school->id,
             'email' => $request->email,
-            'phone_number' => $request->phone_number,
-            'dob' => $request->dob,
-            'address' => $request->address,
-            'id_card' => $request->id_card,
-            'is_designer' => $request->is_designer == '1' ? true : false,
-            'is_customer' => $request->is_customer == '1' ? true : false,
-            'password' => bcrypt($request->password)
+            'phone_number' => '08218348',
+            'role' => 'admin',
+            'password' => $school->password
         ]);
 
-
-        //Request is validated
-        //Crean token
         try {
-            $token = JWTAuth::attempt($request->only('email', 'password'), ['exp' => Carbon::now()->addDays(7)->timestamp]);
             //User created, return success response
             return response()->json([
                 'success' => true,
-                'message' => 'User created successfully',
+                'message' => 'success',
                 'data' => $user,
-                'token' => $token
             ], Response::HTTP_OK);
         } catch (JWTException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error Register user',
+                'message' => 'Error Register payment',
             ], 500);
         }
     }

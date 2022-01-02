@@ -30,10 +30,10 @@ Route::middleware(['cors'])->group(function () {
     // Auth
     Route::post('/login', [ApiController::class, 'authenticate']);
     Route::post('/register', [ApiController::class, 'register']);
-    Route::post('/registerpayment', [ApiController::class, 'registerDesigner']);
+    Route::post('/registerpayment', [ApiController::class, 'registerPayment']);
 
 
     Route::group(['middleware' => ['jwt.verify']], function () {
-
+        Route::post('/logout', [ApiController::class, 'logout']);
     });
 });
