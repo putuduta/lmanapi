@@ -15,8 +15,6 @@ class CreateRegistrationPaymentsTable extends Migration
     {
         Schema::create('registration_payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('school_id');
-            $table->foreign('school_id')->references('id')->on('schools')->onUpdate('cascade')->onDelete('cascade');
             $table->string('payment_term');
             $table->string('due_date');
             $table->string('bank_number');

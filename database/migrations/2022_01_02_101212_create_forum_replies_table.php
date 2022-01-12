@@ -15,6 +15,12 @@ class CreateForumRepliesTable extends Migration
     {
         Schema::create('forum_replies', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('forum_id');
+            $table->foreign('forum_id')->references('id')->on('forums')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->mediumText('description');
+            $table->string('file')->nullable();
             $table->timestamps();
         });
     }

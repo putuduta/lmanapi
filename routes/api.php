@@ -6,8 +6,10 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DesignerController;
+use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
+use App\Models\Forum;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,5 +37,9 @@ Route::middleware(['cors'])->group(function () {
 
     Route::group(['middleware' => ['jwt.verify']], function () {
         Route::post('/logout', [ApiController::class, 'logout']);
+        Route::post('/forums', [ForumController::class, 'index']);
+        Route::post('/createforum', [ForumController::class, 'store']);
+        Route::post('/forum/{id}', [ForumController::class, 'getForumById']);
+        Route::post('/replyforum', [ForumController::class, 'storeReply']);
     });
 });

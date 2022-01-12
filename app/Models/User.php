@@ -58,4 +58,9 @@ class User extends Authenticatable implements JWTSubject
     public function institution(){
         return $this->hasOne('App\Models\School', 'id','school_id')->withDefault();
     }
+
+    public function forums(){
+        return $this->hasMany('App\Models\Forum', 'id','forum_id')->withDefault();
+    }
 }
+
